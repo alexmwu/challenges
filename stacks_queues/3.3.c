@@ -11,6 +11,7 @@ Implement a function popAt(int index) which performs a pop operation on a specif
 */
 
 #include <stdlib.h>
+#include <stdio.h>
 
 struct Node {
   int data;
@@ -62,6 +63,19 @@ void freeSos(sos *Sos) {
   free(Sos);
 }
 
+void printSos(sos *Sos) {
+  int i;
+  for(i = Sos -> numStacks - 1; i <= 0; i--) {
+    printf("~~~~~\n");
+    node *tmp = Sos -> stacks[i];
+    while(tmp != NULL) {
+      printf("%d\n", tmp -> data);
+      tmp = tmp -> next;
+    }
+    printf("~~~~~\n\n");
+  }
+}
+
 void push(sos *Sos, int value) {
 
 }
@@ -78,6 +92,25 @@ int popAt(sos *Sos) {
 
 }
 
-int main() {
 
+int main() {
+  sos *Sos = initSos(3);  // initialize SetOfStacks with size of 3
+  int i;
+
+  // test regular SetOfStacks
+  for(i = 0; i < 20; i++) {
+    push(Sos, i);
+  }
+  printf("Max size: %d", Sos -> maxSize);
+  printSos(Sos);
+  while(Sos -> currTop != NULL) {
+    pop(Sos);
+  }
+  printSos(Sos);
+
+
+  // test sos with popAt
+
+
+  freeSos(Sos);
 }
