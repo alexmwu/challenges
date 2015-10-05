@@ -24,7 +24,8 @@ struct SetOfStacks {
   node **stacks;
   int numStacks;
   int maxSize;   // max size of a stack
-  int *currTop; // current top for each stack (needed if a popAt function is to be implemented)
+  int currStack;
+  int *currSizes; // current top for each stack (needed if a popAt function is to be implemented)
 };
 
 typedef struct SetOfStacks sos;
@@ -34,10 +35,11 @@ sos *initSOS(int size) {
   Sos = malloc(sizeof(Sos));
   Sos -> numStacks = 1;
   Sos -> maxSize = size;
-  Sos -> currTop = malloc(sizeof(int)); // allocate space for Sos -> numStacks == 1 int
-  Sos -> currTop[0] = 0;
-  Sos -> stacks = malloc(sizeof(node *)); // allocate space for Sos -> numStacks == 1 int
-  Sos -> stacks[0] = malloc(sizeof(node));  // allocate space for first top of stack (there should only be one)
+  Sos -> currSizes = malloc(sizeof(int)); // allocate space for 1 (Sos -> numStacks) int
+  Sos -> currSizes[0] = 0;
+  Sos -> stacks = malloc(sizeof(node *)); // allocate space for 1 (Sos -> numStacks) node pointer
+  Sos -> stacks[0] = NULL;  // don't allocate space for first top of stack; this should be handled by push
+  Sos -> currStack = 0;
   return Sos;
 }
 
@@ -59,7 +61,7 @@ void freeSos(sos *Sos) {
   for(i = 0; i < Sos -> numStacks; i++) {
     freeStack(Sos -> stacks[i]);
   }
-  free(Sos -> currTop);
+  free(Sos -> currSizes);
   free(Sos);
 }
 
@@ -77,11 +79,25 @@ void printSos(sos *Sos) {
 }
 
 void push(sos *Sos, int value) {
-
+  if(Sos -> currSizes[Sos -> currStack] >= Sos -> maxSize) {
+    node **moreStacks = Sos -> stacks;
+    Sos -> stacks =
+  }
+  else {
+    node *tmp = malloc(sizeof(node));   // allocate space for new stack item
+    tmp -> data = value;
+    tmp -> next = Sos -> stacks[Sos -> currStack];
+    Sos -> stacks[Sos -> currStack] = tmp;
+    Sos -> currSizes[Sos -> currStack]++;
+  }
 }
 
 int pop(sos *Sos) {
-
+  int popped = Sos -> stacks[Sos -> currStack] -> data;
+  node *tmp = Sos -> stacks[Sos -> currStack] -> next;
+  Sos -> stacks
+  Sos -> 
+  return;
 }
 
 int peek(sos *Sos) {
@@ -103,7 +119,7 @@ int main() {
   }
   printf("Max size: %d", Sos -> maxSize);
   printSos(Sos);
-  while(Sos -> currTop != NULL) {
+  while(Sos -> stacks[0] != NULL) {
     pop(Sos);
   }
   printSos(Sos);
