@@ -1,10 +1,9 @@
-#!/usr/bin/env python
-
 import sys
 import math
-# raw_input()
+raw_input()
 
 primes = {}
+primes[0] = False
 primes[1] = False
 
 def isPrime(i):
@@ -19,18 +18,21 @@ def isPrime(i):
 
 def getNumPrimes(remainingStr, currStr):
     seen = {}
-    return permutations(seen, remainingStr, currStr)
+    l = permutations(seen, remainingStr, currStr)
+    return l
 
 def permutations(seen, remainingStr, currStr):
     numPrimes = 0
+    if len(currStr) > 0 and currStr[0] == '0':
+        return 0
+    if currStr in seen:
+        return 0
+    else:
+        seen[currStr] = 1
     for i in xrange(len(remainingStr)):
         newStr = currStr
         newStr += remainingStr[i]
         val = int(newStr)
-        if val in seen:
-            continue
-        else:
-            seen[val] = 1
         if isPrime(val):
             numPrimes += 1
         numPrimes += permutations(seen, remainingStr[:i] + remainingStr[i+1:], newStr)
@@ -38,6 +40,9 @@ def permutations(seen, remainingStr, currStr):
 
 
 while 1:
-    line = raw_input()
-    if not line: break
-    print getNumPrimes(line, "")
+    try:
+        line = raw_input().rstrip()
+        if not line: break
+        print getNumPrimes(line, "")
+    except(EOFError):
+        break
